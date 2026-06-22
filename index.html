@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meta Creative Volume Calculator · Hightouch</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; }
+
+  .app { min-height: 100vh; width: 100%; max-width: 680px; margin: 0 auto; }
+
+  .screen { display: none; width: 100%; }
+  .screen.active { display: block; }
+
+  /* LANDING */
+  .landing { padding: 56px 40px 64px; }
+  .logo-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 56px; }
+  .logo-mark { width: 28px; height: 28px; background: #1a1a1a; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .logo-mark svg { width: 16px; height: 16px; }
+  .logo-text { font-size: 15px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.3px; }
+
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 16px; }
+  .landing-title { font-size: 38px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 560px; }
+  .landing-sub { font-size: 16px; color: #555; line-height: 1.65; margin-bottom: 44px; max-width: 500px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
+  .stat-card { background: #f7f7f8; border-radius: 10px; padding: 20px 18px; }
+  .stat-num { font-size: 28px; font-weight: 700; color: #6366f1; letter-spacing: -0.5px; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 13px; color: #666; line-height: 1.4; }
+
+  .fatigue-note { font-size: 14px; color: #555; margin-bottom: 36px; line-height: 1.65; max-width: 500px; }
+  .fatigue-note strong { color: #1a1a1a; }
+
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #1a1a1a; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; }
+  .cta-btn:hover { background: #2d2d2d; }
+
+  /* QUESTION SCREENS */
+  .q-screen { padding: 40px 40px 56px; }
+  .q-progress { display: flex; align-items: center; gap: 6px; margin-bottom: 44px; }
+  .q-dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; transition: all 0.2s; }
+  .q-dot.done { background: #6366f1; }
+  .q-dot.active { width: 20px; border-radius: 4px; background: #6366f1; }
+  .q-step { font-size: 12px; color: #aaa; margin-left: 4px; }
+
+  .q-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 12px; }
+  .q-title { font-size: 26px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 8px; }
+  .q-hint { font-size: 14px; color: #666; margin-bottom: 36px; line-height: 1.55; }
+
+  /* Budget */
+  .budget-row { display: flex; align-items: baseline; gap: 2px; margin-bottom: 4px; }
+  .budget-symbol { font-size: 44px; font-weight: 700; color: #aaa; line-height: 1; }
+  .budget-row input[type=number] { font-size: 44px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px; border: none; background: transparent; outline: none; width: 100%; font-family: inherit; -moz-appearance: textfield; }
+  .budget-row input[type=number]::-webkit-outer-spin-button,
+  .budget-row input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .budget-row input::placeholder { color: #ddd; }
+  .budget-underline { height: 2px; background: #eee; border-radius: 1px; margin-bottom: 28px; transition: background 0.2s; }
+  .budget-underline.focused { background: #6366f1; }
+
+  input[type=range] { width: 100%; accent-color: #6366f1; height: 4px; cursor: pointer; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: #aaa; margin-top: 8px; margin-bottom: 36px; }
+
+  /* Industry */
+  .industry-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 36px; }
+  .industry-btn { padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; font-size: 14px; font-weight: 400; color: #1a1a1a; cursor: pointer; text-align: left; transition: all 0.15s; font-family: inherit; }
+  .industry-btn:hover { border-color: #c7c5f7; background: #f8f7ff; }
+  .industry-btn.selected { border-color: #6366f1; background: #f0f0ff; color: #4338ca; font-weight: 500; }
+
+  /* Email */
+  .email-input-wrap { margin-bottom: 8px; }
+  .email-input-wrap input[type=email] { width: 100%; padding: 14px 16px; font-size: 15px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; transition: border-color 0.15s; }
+  .email-input-wrap input[type=email]:focus { border-color: #6366f1; }
+  .email-note { font-size: 12px; color: #aaa; margin-bottom: 36px; line-height: 1.5; }
+
+  .next-btn { display: inline-flex; align-items: center; gap: 8px; background: #1a1a1a; color: #fff; font-size: 15px; font-weight: 500; padding: 13px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; font-family: inherit; }
+  .next-btn:hover { background: #2d2d2d; }
+  .next-btn:disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
+  .back-link { font-size: 13px; color: #aaa; cursor: pointer; margin-top: 14px; display: inline-block; background: none; border: none; font-family: inherit; }
+  .back-link:hover { color: #666; }
+
+  /* RESULTS */
+  .results { padding: 40px 40px 64px; }
+  .results-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 12px; }
+  .results-title { font-size: 34px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.7px; line-height: 1.15; margin-bottom: 10px; }
+  .results-title .big-num { color: #6366f1; }
+  .results-weekly { font-size: 17px; color: #666; margin-bottom: 40px; line-height: 1.55; }
+  .results-weekly strong { color: #1a1a1a; font-weight: 600; }
+
+  .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 36px; }
+  .metric-card { background: #f7f7f8; border-radius: 10px; padding: 18px 16px; }
+  .metric-val { font-size: 26px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.4px; margin-bottom: 4px; }
+  .metric-lbl { font-size: 12px; color: #666; line-height: 1.35; }
+
+  .explainer { border: 1px solid #e5e5e5; border-radius: 10px; padding: 24px; margin-bottom: 28px; }
+  .explainer-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 14px; }
+  .explainer ul { list-style: none; padding: 0; }
+  .explainer ul li { font-size: 14px; color: #555; line-height: 1.65; padding: 8px 0 8px 20px; border-bottom: 1px solid #f0f0f0; position: relative; }
+  .explainer ul li:last-child { border-bottom: none; padding-bottom: 0; }
+  .explainer ul li::before { content: '→'; position: absolute; left: 0; color: #6366f1; font-size: 12px; top: 10px; }
+
+  .cta-block { background: #f8f7ff; border: 1px solid #c7c5f7; border-radius: 10px; padding: 28px; }
+  .cta-block-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #6366f1; margin-bottom: 10px; }
+  .cta-block h3 { font-size: 18px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.3px; margin-bottom: 10px; }
+  .cta-block p { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 20px; }
+  .cta-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .cta-pill { font-size: 12px; font-weight: 500; color: #4338ca; background: #ede9fe; padding: 5px 10px; border-radius: 20px; }
+  .demo-btn { display: inline-flex; align-items: center; gap: 6px; background: #6366f1; color: #fff; font-size: 14px; font-weight: 500; padding: 12px 22px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+  .demo-btn:hover { background: #4f46e5; }
+
+  @media (max-width: 520px) {
+    .landing, .q-screen, .results { padding: 32px 20px 48px; }
+    .stat-row, .metrics-row { grid-template-columns: 1fr 1fr; }
+    .landing-title { font-size: 28px; }
+    .budget-row input[type=number], .budget-symbol { font-size: 34px; }
+    .results-title { font-size: 26px; }
+    .industry-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- LANDING -->
+  <div class="screen active" id="screen-landing">
+    <div class="landing">
+      <div class="logo-bar">
+        <div class="logo-mark">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1" fill="white"/><rect x="2" y="9" width="5" height="5" rx="1" fill="white"/><rect x="9" y="9" width="5" height="5" rx="1" fill="white"/></svg>
+        </div>
+        <span class="logo-text">Hightouch</span>
+      </div>
+
+      <div class="eyebrow">Meta Ad Creative Forecaster</div>
+      <h1 class="landing-title">How many ad creatives do you actually need?</h1>
+      <p class="landing-sub">Meta advertising has fundamentally changed. The brands winning today have cracked the math on creative volume — most haven't.</p>
+
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num">40–60%</div>
+          <div class="stat-label">CPM increase on Meta since 2021</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">10x</div>
+          <div class="stat-label">More creative volume needed vs. 3 years ago</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1 in 10</div>
+          <div class="stat-label">Ads launched actually becomes a winner</div>
+        </div>
+      </div>
+
+      <p class="fatigue-note">Meta's algorithm fatigues winning ads faster than ever — <strong>40% burn out every single month.</strong> That means you're constantly running out of runway without realizing it.</p>
+
+      <button class="cta-btn" onclick="showScreen('screen-q1')">
+        Get your required creative volume
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Q1: BUDGET -->
+  <div class="screen" id="screen-q1">
+    <div class="q-screen">
+      <div class="q-progress">
+        <div class="q-dot active"></div>
+        <div class="q-dot"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">1 of 3</span>
+      </div>
+      <div class="q-label">Step 1</div>
+      <h2 class="q-title">What's your monthly Meta ad budget?</h2>
+      <p class="q-hint">Your target spend for next month. This is the only number we need to build your forecast.</p>
+
+      <div class="budget-row">
+        <span class="budget-symbol">$</span>
+        <input type="number" id="budget-input" placeholder="200000" min="0" max="2500000" value="200000" />
+      </div>
+      <div class="budget-underline" id="budget-underline"></div>
+
+      <input type="range" id="budget-slider" min="0" max="2500000" step="5000" value="200000" />
+      <div class="slider-labels">
+        <span>$0</span>
+        <span>$250K</span>
+        <span>$500K</span>
+        <span>$1M</span>
+        <span>$2.5M</span>
+      </div>
+
+      <button class="next-btn" onclick="goToQ2()">
+        Next
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <br>
+      <button class="back-link" onclick="showScreen('screen-landing')">← Back</button>
+    </div>
+  </div>
+
+  <!-- Q2: INDUSTRY -->
+  <div class="screen" id="screen-q2">
+    <div class="q-screen">
+      <div class="q-progress">
+        <div class="q-dot done"></div>
+        <div class="q-dot active"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">2 of 3</span>
+      </div>
+      <div class="q-label">Step 2</div>
+      <h2 class="q-title">What's your industry?</h2>
+      <p class="q-hint">We use industry benchmarks to set realistic win rate expectations for your forecast.</p>
+
+      <div class="industry-grid">
+        <button class="industry-btn" onclick="selectIndustry(this, 0.12)">E-commerce &amp; Retail</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.10)">DTC / Consumer brands</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.08)">Fashion &amp; Apparel</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.11)">Beauty &amp; Personal Care</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.09)">Health &amp; Wellness</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.10)">Food &amp; Beverage</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.07)">Financial Services</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.08)">Travel &amp; Hospitality</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.06)">B2B / SaaS</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.13)">Media &amp; Entertainment</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.09)">Home &amp; Garden</button>
+        <button class="industry-btn" onclick="selectIndustry(this, 0.10)">Other</button>
+      </div>
+
+      <button class="next-btn" id="industry-next" disabled onclick="goToQ3()">
+        Next
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <br>
+      <button class="back-link" onclick="showScreen('screen-q1')">← Back</button>
+    </div>
+  </div>
+
+  <!-- Q3: EMAIL -->
+  <div class="screen" id="screen-q3">
+    <div class="q-screen">
+      <div class="q-progress">
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot active"></div>
+        <span class="q-step">3 of 3</span>
+      </div>
+      <div class="q-label">Step 3</div>
+      <h2 class="q-title">Where should we send your results?</h2>
+      <p class="q-hint">Your creative volume forecast — plus a plain-English breakdown of the math — will unlock immediately.</p>
+
+      <div class="email-input-wrap">
+        <input type="email" id="email-input" placeholder="you@company.com" oninput="checkEmail()" />
+      </div>
+      <p class="email-note">No spam. Relevant content for Meta performance marketers only.</p>
+
+      <button class="next-btn" id="email-next" disabled onclick="showResults()">
+        Unlock my results
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <br>
+      <button class="back-link" onclick="showScreen('screen-q2')">← Back</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="results">
+      <div class="results-eyebrow">Your creative forecast</div>
+      <h2 class="results-title">You need <span class="big-num" id="res-monthly">—</span> new creatives launched each month</h2>
+      <p class="results-weekly">That's roughly <strong id="res-weekly">—</strong> new ads every week to stay ahead of fatigue and hit your spend target.</p>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-val" id="res-winners">—</div>
+          <div class="metric-lbl">Active winners needed to carry your budget</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" id="res-fatigued">—</div>
+          <div class="metric-lbl">Winners fatiguing out this month</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" id="res-new-winners">—</div>
+          <div class="metric-lbl">Net-new winners you need to produce</div>
+        </div>
+      </div>
+
+      <div class="explainer">
+        <div class="explainer-title">How we got to this number</div>
+        <ul id="explainer-list"></ul>
+      </div>
+
+      <div class="cta-block">
+        <div class="cta-block-eyebrow">Hightouch Ad Studio</div>
+        <h3>Scale ad production without the bottlenecks</h3>
+        <p>Most teams know they need more creative — they just can't produce it fast enough. Hightouch Ad Studio lets you generate on-brand ad variations at scale, grounded in your actual customer data, brand guidelines, and approved assets. No design tickets. No brand review delays. Just more winning ads, faster.</p>
+        <div class="cta-features">
+          <span class="cta-pill">AI-generated variations</span>
+          <span class="cta-pill">On-brand by default</span>
+          <span class="cta-pill">Connected to your data</span>
+          <span class="cta-pill">Editable outputs</span>
+          <span class="cta-pill">Built-in approval flow</span>
+        </div>
+        <button class="demo-btn" onclick="window.open('https://hightouch.com/platform/ad-studio', '_blank')">
+          See Hightouch Ad Studio
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var state = { budget: 200000, winRate: 0.10 };
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  var slider = document.getElementById('budget-slider');
+  var budgetInput = document.getElementById('budget-input');
+
+  slider.addEventListener('input', function() {
+    state.budget = parseInt(slider.value);
+    budgetInput.value = state.budget;
+  });
+
+  budgetInput.addEventListener('focus', function() { document.getElementById('budget-underline').classList.add('focused'); });
+  budgetInput.addEventListener('blur', function() { document.getElementById('budget-underline').classList.remove('focused'); });
+  budgetInput.addEventListener('input', function() {
+    var raw = parseInt(budgetInput.value) || 0;
+    state.budget = Math.min(raw, 2500000);
+    slider.value = state.budget;
+  });
+
+  function goToQ2() {
+    var raw = parseInt(budgetInput.value) || 200000;
+    state.budget = raw > 0 ? raw : 200000;
+    showScreen('screen-q2');
+  }
+
+  function selectIndustry(el, winRate) {
+    document.querySelectorAll('.industry-btn').forEach(function(b) { b.classList.remove('selected'); });
+    el.classList.add('selected');
+    state.winRate = winRate;
+    document.getElementById('industry-next').disabled = false;
+  }
+
+  function goToQ3() {
+    if (!state.winRate) return;
+    showScreen('screen-q3');
+  }
+
+  function checkEmail() {
+    var val = document.getElementById('email-input').value;
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    document.getElementById('email-next').disabled = !valid;
+  }
+
+  function fmt(n) {
+    if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return '$' + Math.round(n / 1000) + 'K';
+    return '$' + n;
+  }
+
+  function showResults() {
+    var budget = state.budget || 200000;
+    var winRate = state.winRate || 0.10;
+    var churnRate = 0.40;
+    var buffer = 1.20;
+    var spendPerWinner = Math.max(budget * 0.10, 5000);
+
+    var winnersRequired = Math.ceil(budget / spendPerWinner);
+    var survivors = Math.floor(winnersRequired * (1 - churnRate));
+    var fatigued = winnersRequired - survivors;
+    var newWinnersNeeded = Math.ceil(winnersRequired - survivors);
+    var baseTarget = Math.ceil(newWinnersNeeded / winRate);
+    var finalTarget = Math.ceil(baseTarget * buffer);
+    var weekly = Math.ceil(finalTarget / 4.3);
+    var pct = Math.round(winRate * 100);
+
+    document.getElementById('res-monthly').textContent = finalTarget;
+    document.getElementById('res-weekly').textContent = weekly + ' ads';
+    document.getElementById('res-winners').textContent = winnersRequired;
+    document.getElementById('res-fatigued').textContent = fatigued;
+    document.getElementById('res-new-winners').textContent = newWinnersNeeded;
+
+    var list = document.getElementById('explainer-list');
+    list.innerHTML =
+      '<li>Your ' + fmt(budget) + '/month budget needs <strong>' + winnersRequired + ' winning ads</strong> running simultaneously — each winner absorbs roughly ' + fmt(Math.round(spendPerWinner)) + '/month at your scale.</li>' +
+      '<li><strong>' + fatigued + ' of those winners</strong> will burn out this month. Ad fatigue is unavoidable on Meta — 40% of winning ads stop performing every 30 days.</li>' +
+      '<li>To replace them, you need <strong>' + newWinnersNeeded + ' net-new winners.</strong> But only ~' + pct + '% of ads in your industry become winners, so you have to launch far more to find them.</li>' +
+      '<li>Dividing ' + newWinnersNeeded + ' needed winners by a ' + pct + '% win rate = ' + baseTarget + ' launches. Add a <strong>20% buffer</strong> for testing variance and seasonal swings — that\'s <strong>' + finalTarget + ' creatives per month.</strong></li>';
+
+    showScreen('screen-results');
+  }
+</script>
+</body>
+</html>
