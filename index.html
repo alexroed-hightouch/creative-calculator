@@ -5,8 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Meta Creative Volume Calculator · Hightouch</title>
 <style>
+  @font-face { font-family: 'Nuckle'; font-weight: 400; font-style: normal; font-display: swap; src: url('https://hightouch.com/fonts/nuckle/nuckle-regular.woff2') format('woff2'); }
+  @font-face { font-family: 'Nuckle'; font-weight: 600; font-style: normal; font-display: swap; src: url('https://hightouch.com/fonts/nuckle/nuckle-semi-bold.woff2') format('woff2'); }
+  @font-face { font-family: 'Nuckle'; font-weight: 700; font-style: normal; font-display: swap; src: url('https://hightouch.com/fonts/nuckle/nuckle-bold.woff2') format('woff2'); }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; }
+
+  body {
+    font-family: 'Nuckle', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
+    color: #141213;
+    min-height: 100vh;
+  }
+
+  body.landing-bg {
+    background:
+      radial-gradient(ellipse 110% 85% at -8% -5%, rgba(162, 198, 175, 0.85) 0%, rgba(162, 198, 175, 0) 52%),
+      radial-gradient(ellipse 90% 75% at 110% -5%, rgba(235, 175, 140, 0.85) 0%, rgba(235, 175, 140, 0) 52%),
+      radial-gradient(ellipse 75% 65% at 50% 115%, rgba(215, 175, 165, 0.6) 0%, rgba(215, 175, 165, 0) 55%),
+      #ddd0c8;
+  }
 
   .app { min-height: 100vh; width: 100%; max-width: 680px; margin: 0 auto; }
 
@@ -14,110 +32,202 @@
   .screen.active { display: block; }
 
   /* LANDING */
-  .landing { padding: 56px 40px 64px; }
-  .logo-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 56px; }
-  .logo-mark { width: 28px; height: 28px; background: #1a1a1a; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
-  .logo-mark svg { width: 16px; height: 16px; }
-  .logo-text { font-size: 15px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.3px; }
+  .landing { padding: 56px 40px 72px; }
+  .logo-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 64px; }
+  .logo-mark svg { height: 26px; width: auto; display: block; }
 
-  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 16px; }
-  .landing-title { font-size: 38px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 560px; }
-  .landing-sub { font-size: 16px; color: #555; line-height: 1.65; margin-bottom: 44px; max-width: 500px; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    color: #1a5c42;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.65);
+    border-radius: 100px;
+    padding: 5px 13px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 
-  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
-  .stat-card { background: #f7f7f8; border-radius: 10px; padding: 20px 18px; }
-  .stat-num { font-size: 28px; font-weight: 700; color: #6366f1; letter-spacing: -0.5px; line-height: 1; margin-bottom: 6px; }
-  .stat-label { font-size: 13px; color: #666; line-height: 1.4; }
+  .landing-title { font-size: 42px; font-weight: 700; color: #141213; letter-spacing: -1px; line-height: 1.1; margin-bottom: 18px; max-width: 560px; }
+  .landing-sub { font-size: 16px; color: #3a3330; line-height: 1.65; margin-bottom: 44px; max-width: 500px; }
 
-  .fatigue-note { font-size: 14px; color: #555; margin-bottom: 36px; line-height: 1.65; max-width: 500px; }
-  .fatigue-note strong { color: #1a1a1a; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 36px; }
+  .stat-card {
+    background: rgba(255,255,255,0.58);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.72);
+    border-radius: 14px;
+    padding: 20px 18px;
+  }
+  .stat-num { font-size: 26px; font-weight: 700; color: #141213; letter-spacing: -0.5px; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: #4a3f3a; line-height: 1.4; }
 
-  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #1a1a1a; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; }
-  .cta-btn:hover { background: #2d2d2d; }
+  .fatigue-note {
+    font-size: 14px; color: #3a3330; margin-bottom: 36px; line-height: 1.65;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .fatigue-note strong { color: #141213; }
+
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #141213; color: #fff; font-size: 15px; font-weight: 600; padding: 14px 26px; border-radius: 100px; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; letter-spacing: -0.1px; }
+  .cta-btn:hover { background: #2e2c2d; }
 
   /* QUESTION SCREENS */
-  .q-screen { padding: 40px 40px 56px; }
-  .q-progress { display: flex; align-items: center; gap: 6px; margin-bottom: 44px; }
-  .q-dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; transition: all 0.2s; }
-  .q-dot.done { background: #6366f1; }
-  .q-dot.active { width: 20px; border-radius: 4px; background: #6366f1; }
-  .q-step { font-size: 12px; color: #aaa; margin-left: 4px; }
+  .q-screen { padding: 48px 40px 64px; }
+  .q-progress { display: flex; align-items: center; gap: 6px; margin-bottom: 48px; }
+  .q-dot { width: 6px; height: 6px; border-radius: 50%; background: #e0e0e0; transition: all 0.2s; }
+  .q-dot.done { background: #2da281; }
+  .q-dot.active { width: 20px; border-radius: 4px; background: #2da281; }
+  .q-step { font-size: 12px; color: #bbb; margin-left: 4px; }
 
-  .q-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 12px; }
-  .q-title { font-size: 26px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 8px; }
-  .q-hint { font-size: 14px; color: #666; margin-bottom: 36px; line-height: 1.55; }
+  .q-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #2da281; margin-bottom: 14px; }
+  .q-title { font-size: 28px; font-weight: 700; color: #141213; letter-spacing: -0.6px; line-height: 1.2; margin-bottom: 10px; }
+  .q-hint { font-size: 14px; color: #777; margin-bottom: 36px; line-height: 1.6; }
 
   /* Budget */
   .budget-row { display: flex; align-items: baseline; gap: 2px; margin-bottom: 4px; }
-  .budget-symbol { font-size: 44px; font-weight: 700; color: #aaa; line-height: 1; }
-  .budget-row input[type=number] { font-size: 44px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px; border: none; background: transparent; outline: none; width: 100%; font-family: inherit; -moz-appearance: textfield; }
-  .budget-row input[type=number]::-webkit-outer-spin-button,
-  .budget-row input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .budget-symbol { font-size: 44px; font-weight: 400; color: #141213; line-height: 1; }
+  .budget-row input[type=text] { font-size: 44px; font-weight: 400; color: #141213; letter-spacing: -1px; border: none; background: transparent; outline: none; width: 100%; font-family: inherit; }
   .budget-row input::placeholder { color: #ddd; }
   .budget-underline { height: 2px; background: #eee; border-radius: 1px; margin-bottom: 28px; transition: background 0.2s; }
-  .budget-underline.focused { background: #6366f1; }
+  .budget-underline.focused { background: #2da281; }
 
-  input[type=range] { width: 100%; accent-color: #6366f1; height: 4px; cursor: pointer; }
-  .slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: #aaa; margin-top: 8px; margin-bottom: 36px; }
+  input[type=range] { width: 100%; accent-color: #2da281; height: 4px; cursor: pointer; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: #bbb; margin-top: 8px; margin-bottom: 40px; }
 
   /* Industry */
   .industry-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 36px; }
-  .industry-btn { padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; font-size: 14px; font-weight: 400; color: #1a1a1a; cursor: pointer; text-align: left; transition: all 0.15s; font-family: inherit; }
-  .industry-btn:hover { border-color: #c7c5f7; background: #f8f7ff; }
-  .industry-btn.selected { border-color: #6366f1; background: #f0f0ff; color: #4338ca; font-weight: 500; }
+  .industry-btn { padding: 13px 16px; border: 1px solid #ebebeb; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 400; color: #141213; cursor: pointer; text-align: left; transition: all 0.15s; font-family: inherit; }
+  .industry-btn:hover { border-color: #6ee7b7; background: #f0fdf6; }
+  .industry-btn.selected { border-color: #2da281; background: #f0fdf6; color: #065f46; font-weight: 500; }
+
+  /* Brand search */
+  .brand-search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .brand-search-input { flex: 1; padding: 13px 16px; font-size: 15px; border: 1px solid #ebebeb; border-radius: 10px; background: #fff; color: #141213; font-family: inherit; outline: none; transition: border-color 0.15s; }
+  .brand-search-input:focus { border-color: #2da281; }
+  .brand-search-btn { display: inline-flex; align-items: center; gap: 6px; background: #141213; color: #fff; font-size: 14px; font-weight: 600; padding: 0 20px; border-radius: 100px; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background 0.15s; }
+  .brand-search-btn:hover { background: #2e2c2d; }
+  .brand-results { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; max-height: 340px; overflow-y: auto; }
+  .brand-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #ebebeb; border-radius: 10px; background: #fff; cursor: pointer; transition: all 0.15s; font-family: inherit; text-align: left; width: 100%; }
+  .brand-card:hover { border-color: #6ee7b7; background: #f0fdf6; }
+  .brand-card.selected { border-color: #2da281; background: #f0fdf6; }
+  .brand-card-logo { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: #f0f0f0; flex-shrink: 0; }
+  .brand-card-logo-placeholder { width: 40px; height: 40px; border-radius: 8px; background: #e8e8e8; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: #888; flex-shrink: 0; }
+  .brand-card-info { flex: 1; min-width: 0; }
+  .brand-card-name { font-size: 14px; font-weight: 600; color: #141213; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-card-meta { font-size: 12px; color: #888; margin-top: 2px; }
+  .brand-status { font-size: 14px; color: #aaa; padding: 20px 0; text-align: center; }
 
   /* Email */
   .email-input-wrap { margin-bottom: 8px; }
-  .email-input-wrap input[type=email] { width: 100%; padding: 14px 16px; font-size: 15px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; transition: border-color 0.15s; }
-  .email-input-wrap input[type=email]:focus { border-color: #6366f1; }
-  .email-note { font-size: 12px; color: #aaa; margin-bottom: 36px; line-height: 1.5; }
+  .email-input-wrap input[type=email] { width: 100%; padding: 14px 18px; font-size: 15px; border: 1px solid #ebebeb; border-radius: 10px; background: #fff; color: #141213; font-family: inherit; outline: none; transition: border-color 0.15s; }
+  .email-input-wrap input[type=email]:focus { border-color: #2da281; }
+  .email-note { font-size: 12px; color: #bbb; margin-bottom: 36px; line-height: 1.5; }
 
-  .next-btn { display: inline-flex; align-items: center; gap: 8px; background: #1a1a1a; color: #fff; font-size: 15px; font-weight: 500; padding: 13px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.15s; font-family: inherit; }
-  .next-btn:hover { background: #2d2d2d; }
-  .next-btn:disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
-  .back-link { font-size: 13px; color: #aaa; cursor: pointer; margin-top: 14px; display: inline-block; background: none; border: none; font-family: inherit; }
+  .next-btn { display: inline-flex; align-items: center; gap: 8px; background: #141213; color: #fff; font-size: 15px; font-weight: 600; padding: 13px 26px; border-radius: 100px; border: none; cursor: pointer; transition: background 0.15s; font-family: inherit; letter-spacing: -0.1px; }
+  .next-btn:hover { background: #2e2c2d; }
+  .next-btn:disabled { background: #e8e8e8; color: #bbb; cursor: not-allowed; }
+  .back-link { font-size: 13px; color: #bbb; cursor: pointer; margin-top: 16px; display: inline-block; background: none; border: none; font-family: inherit; }
   .back-link:hover { color: #666; }
 
   /* RESULTS */
-  .results { padding: 40px 40px 64px; }
-  .results-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6366f1; margin-bottom: 12px; }
-  .results-title { font-size: 34px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.7px; line-height: 1.15; margin-bottom: 10px; }
-  .results-title .big-num { color: #6366f1; }
-  .results-weekly { font-size: 17px; color: #666; margin-bottom: 40px; line-height: 1.55; }
-  .results-weekly strong { color: #1a1a1a; font-weight: 600; }
+  .results { padding: 0 0 80px; }
 
-  .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 36px; }
-  .metric-card { background: #f7f7f8; border-radius: 10px; padding: 18px 16px; }
-  .metric-val { font-size: 26px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.4px; margin-bottom: 4px; }
-  .metric-lbl { font-size: 12px; color: #666; line-height: 1.35; }
+  /* Hero stat block */
+  /* Report header */
+  .results-report-header { text-align: center; padding: 32px 40px 28px; border-bottom: 1px solid #f0f0f0; }
+  .results-report-title { font-size: 16px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #2da281; }
 
-  .explainer { border: 1px solid #e5e5e5; border-radius: 10px; padding: 24px; margin-bottom: 28px; }
-  .explainer-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 14px; }
-  .explainer ul { list-style: none; padding: 0; }
-  .explainer ul li { font-size: 14px; color: #555; line-height: 1.65; padding: 8px 0 8px 20px; border-bottom: 1px solid #f0f0f0; position: relative; }
-  .explainer ul li:last-child { border-bottom: none; padding-bottom: 0; }
-  .explainer ul li::before { content: '→'; position: absolute; left: 0; color: #6366f1; font-size: 12px; top: 10px; }
+  /* Three vertical stats */
+  .results-stat-col { display: flex; flex-direction: column; border-bottom: 1px solid #f0f0f0; margin-bottom: 32px; }
+  .results-stat-item { display: flex; align-items: flex-start; gap: 24px; padding: 28px 40px; border-bottom: 1px solid #f0f0f0; }
+  .results-stat-item:last-child { border-bottom: none; }
+  .results-stat-big { font-size: 56px; font-weight: 700; color: #141213; letter-spacing: -2px; line-height: 1; width: 140px; text-align: right; flex-shrink: 0; }
+  .results-stat-text { display: flex; flex-direction: column; justify-content: center; gap: 3px; padding-top: 6px; }
+  .results-stat-label { font-size: 15px; font-weight: 600; color: #141213; letter-spacing: -0.2px; line-height: 1.4; }
+  .results-stat-sub { font-size: 13px; color: #aaa; line-height: 1.4; }
 
-  .cta-block { background: #f8f7ff; border: 1px solid #c7c5f7; border-radius: 10px; padding: 28px; }
-  .cta-block-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #6366f1; margin-bottom: 10px; }
-  .cta-block h3 { font-size: 18px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.3px; margin-bottom: 10px; }
-  .cta-block p { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 20px; }
-  .cta-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-  .cta-pill { font-size: 12px; font-weight: 500; color: #4338ca; background: #ede9fe; padding: 5px 10px; border-radius: 20px; }
-  .demo-btn { display: inline-flex; align-items: center; gap: 6px; background: #6366f1; color: #fff; font-size: 14px; font-weight: 500; padding: 12px 22px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
-  .demo-btn:hover { background: #4f46e5; }
+  /* Content sections */
+  .results-body { padding: 0 40px; }
+  .results-section { margin-bottom: 24px; background: #f7faf9; border: 1px solid rgba(45,162,129,0.12); border-radius: 16px; overflow: hidden; }
+  .results-section-head { padding: 20px 24px 18px; border-bottom: 1px solid rgba(45,162,129,0.1); }
+  .results-section-h2 { font-size: 15px; font-weight: 700; color: #141213; letter-spacing: -0.2px; }
+  .results-section-body { padding: 20px 24px; }
+
+  .results-bullets { list-style: none; padding: 0; margin: 0; }
+  .results-bullets li { font-size: 15px; color: #141213; line-height: 1.65; padding: 7px 0 7px 24px; position: relative; border-bottom: 1px solid rgba(45,162,129,0.08); }
+  .results-bullets li:last-child { border-bottom: none; padding-bottom: 0; }
+  .results-bullets li:first-child { padding-top: 0; }
+  .results-bullets li::before { content: '→'; position: absolute; left: 0; color: #2da281; font-weight: 600; }
+  .results-bullets li strong { color: #2da281; font-weight: 700; }
+
+  details.explainer-dropdown { margin-top: 16px; border-top: 1px solid rgba(45,162,129,0.1); padding-top: 14px; }
+  details.explainer-dropdown summary { font-size: 13px; color: #2da281; font-weight: 600; padding: 0; cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 5px; }
+  details.explainer-dropdown summary::-webkit-details-marker { display: none; }
+  .explainer-toggle-label::after { content: ' (show more)'; }
+  details.explainer-dropdown[open] .explainer-toggle-label::after { content: ' (show less)'; }
+  .explainer-steps { margin-top: 14px; }
+  .explainer-steps ul { list-style: none; padding: 0; margin: 0; }
+  .explainer-steps ul li { font-size: 13px; color: #666; line-height: 1.65; padding: 8px 0 8px 20px; border-top: 1px solid #f0f0f0; position: relative; }
+  .explainer-steps ul li:first-child { border-top: none; padding-top: 0; }
+  .explainer-steps ul li::before { content: '→'; position: absolute; left: 0; color: #2da281; font-size: 11px; top: 10px; }
+  .explainer-steps ul li:first-child::before { top: 2px; }
+
+  /* Competitor cards */
+  .comp-loading { font-size: 14px; color: #aaa; padding: 16px 0; text-align: center; }
+  .comp-error { font-size: 14px; color: #f87171; padding: 8px 0; }
+  .comp-headline { font-size: 14px; color: #555; margin-bottom: 16px; line-height: 1.5; }
+  .comp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .comp-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden; }
+  .comp-card.you { border-color: rgba(45,162,129,0.3); }
+  .comp-card-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f5f5f5; }
+  .comp-card.you .comp-card-header { background: #f0fdf6; border-bottom-color: rgba(45,162,129,0.1); }
+  .comp-card-logo { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; background: #f0f0f0; flex-shrink: 0; }
+  .comp-card-logo-placeholder { width: 32px; height: 32px; border-radius: 6px; background: #e8e8e8; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #888; flex-shrink: 0; }
+  .comp-card-name { font-size: 13px; font-weight: 700; color: #141213; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .comp-card-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; }
+  .comp-card.you .comp-card-badge { background: #d1fae5; color: #065f46; }
+  .comp-card-metrics { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .comp-metric { display: flex; flex-direction: column; gap: 2px; }
+  .comp-metric-val { font-size: 22px; font-weight: 700; color: #141213; letter-spacing: -0.5px; }
+  .comp-metric-val.higher { color: #2da281; }
+  .comp-metric-val.lower { color: #dc4b4b; }
+  .comp-metric-lbl { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .comp-metric-divider { height: 1px; background: #f5f5f5; margin: 2px 0; }
+
+  /* CTA — dark */
+  .cta-block { background: #141213; border-radius: 16px; padding: 32px; margin-top: 8px; }
+  .cta-block-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #2da281; margin-bottom: 12px; }
+  .cta-block h3 { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 12px; line-height: 1.2; }
+  .cta-block p { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 22px; }
+  .cta-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .cta-pill { font-size: 12px; font-weight: 500; color: #aaa; background: rgba(255,255,255,0.08); padding: 5px 12px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); }
+  .demo-btn { display: inline-flex; align-items: center; gap: 6px; background: #2da281; color: #fff; font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 100px; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; letter-spacing: -0.1px; }
+  .demo-btn:hover { background: #248f70; }
+
+  /* LOADING SCREEN */
+  .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; padding: 48px 40px; gap: 28px; }
+  .loading-ring { width: 64px; height: 64px; border-radius: 50%; border: 4px solid #e8e8e8; border-top-color: #2da281; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 17px; font-weight: 500; color: #141213; letter-spacing: -0.2px; }
 
   @media (max-width: 520px) {
-    .landing, .q-screen, .results { padding: 32px 20px 48px; }
+    .landing, .q-screen, .results { padding: 32px 20px 52px; }
     .stat-row, .metrics-row { grid-template-columns: 1fr 1fr; }
-    .landing-title { font-size: 28px; }
+    .landing-title { font-size: 30px; }
     .budget-row input[type=number], .budget-symbol { font-size: 34px; }
     .results-title { font-size: 26px; }
     .industry-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
-<body>
+<body class="landing-bg">
 <div class="app">
 
   <!-- LANDING -->
@@ -125,14 +235,13 @@
     <div class="landing">
       <div class="logo-bar">
         <div class="logo-mark">
-          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1" fill="white"/><rect x="2" y="9" width="5" height="5" rx="1" fill="white"/><rect x="9" y="9" width="5" height="5" rx="1" fill="white"/></svg>
+          <svg width="292" height="57" viewBox="0 0 292 57" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62.8878 7.27112L68.9313 3.98407C69.1607 3.85895 69.4403 4.02428 69.4403 4.28177V21.2946C70.2669 20.2909 71.3109 19.4855 72.4979 18.9353C73.6827 18.3851 74.9799 18.1064 76.2889 18.1181C82.1364 18.1181 85.6505 21.8353 85.6505 28.1407V42.7094C85.6505 42.8981 85.4974 43.0495 85.3064 43.0495H79.0979C78.907 43.0495 78.7539 42.8981 78.7539 42.7094V29.0517C78.7539 25.7339 77.2205 23.8209 74.2008 23.8209C71.6256 23.8209 69.4974 25.5848 69.4974 29.6868V42.7082C69.4974 42.897 69.3443 43.0484 69.1533 43.0484H63.055C62.864 43.0484 62.7109 42.897 62.7109 42.7082V7.56604C62.7109 7.44092 62.7799 7.32754 62.89 7.26833L62.8878 7.27112Z" fill="#101111"/><path d="M135.218 7.27074L141.359 3.98089C141.589 3.85801 141.868 4.02334 141.868 4.28083L141.775 21.2959C142.6 20.2922 143.645 19.4845 144.831 18.9344C146.015 18.3842 147.313 18.1055 148.624 18.1194C154.464 18.1194 157.978 21.8366 157.978 28.142V42.7107C157.978 42.8994 157.825 43.0508 157.634 43.0508H151.474C151.283 43.0508 151.129 42.8994 151.129 42.7107V29.0536C151.129 25.7358 149.596 23.8228 146.576 23.8228C144.001 23.8228 141.873 25.5867 141.873 29.6892V42.7107C141.873 42.8994 141.72 43.0508 141.529 43.0508H135.431C135.242 43.0508 135.087 42.8994 135.087 42.7107L135.039 7.57068C135.039 7.44557 135.109 7.32939 135.218 7.27074Z" fill="#101111"/><path d="M264.749 7.27112L270.791 3.98407C271.02 3.85895 271.3 4.02428 271.3 4.28177V21.2946C272.126 20.2909 273.17 19.4855 274.355 18.9353C275.54 18.3851 276.839 18.1064 278.148 18.1181C283.989 18.1181 287.507 21.8353 287.507 28.1407V42.7094C287.507 42.8981 287.357 43.0495 287.165 43.0495H280.957C280.766 43.0495 280.61 42.8981 280.61 42.7094V29.0517C280.61 25.7339 279.079 23.8209 276.053 23.8209C273.478 23.8209 271.349 25.5848 271.349 29.6868V42.7082C271.349 42.897 271.196 43.0484 271.005 43.0484H264.914C264.723 43.0484 264.57 42.897 264.57 42.7082V7.56604C264.57 7.44092 264.639 7.32754 264.749 7.26833V7.27112Z" fill="#101111"/><path d="M116.261 37.3244C115.382 37.3412 114.508 37.1803 113.693 36.8519C112.876 36.5235 112.136 36.037 111.517 35.4209C110.896 34.8048 110.409 34.0703 110.084 33.2627C109.759 32.455 109.603 31.5909 109.627 30.724C109.606 29.8572 109.763 28.9976 110.088 28.1921C110.415 27.3895 110.903 26.6595 111.524 26.0479C112.145 25.434 112.883 24.952 113.698 24.6308C114.513 24.3097 115.384 24.1538 116.261 24.1751C119.926 24.1751 122.603 27.108 122.603 30.7235C122.603 34.339 119.926 37.3244 116.261 37.3244ZM122.405 21.1947C121.471 20.1837 120.329 19.381 119.056 18.8426C117.783 18.3019 116.407 18.0372 115.022 18.0657C109.427 18.0657 102.992 22.1252 102.992 30.7754C102.992 39.4257 109.676 43.483 114.926 43.5159C116.336 43.5489 117.735 43.2774 119.028 42.7222C120.32 42.1648 121.471 41.3359 122.406 40.292V42.5899C122.429 43.3763 122.293 44.1627 122.002 44.895C121.711 45.6295 121.271 46.2975 120.713 46.86C120.151 47.4219 119.483 47.8637 118.744 48.1636C118.003 48.4613 117.213 48.6099 116.413 48.5982C114.975 48.6501 113.551 48.2815 112.323 47.5352C112.103 47.4006 111.891 47.2565 111.688 47.1007C111.577 47.018 111.432 47.0013 111.31 47.0677L105.742 50.0716C105.539 50.18 105.503 50.452 105.666 50.6123C108.093 53.0375 111.8 54.7684 116.41 54.7684C124.778 54.7684 129.183 49.1997 129.183 42.3067V18.0819C129.183 17.8221 128.901 17.659 128.671 17.7842L122.403 21.1941L122.405 21.1947Z" fill="#101111"/><path d="M179.108 43.0481H175.253C167.379 43.0481 164.805 40.4056 164.805 32.4379V13.111C164.805 12.9881 164.874 12.8725 164.984 12.8133L171.082 9.49777C171.311 9.37489 171.591 9.53798 171.591 9.79771V18.611H175.896C176.087 18.611 176.24 18.7624 176.24 18.9512V24.2786C176.24 24.4652 176.087 24.6188 175.896 24.6188H171.591V32.391C171.591 36.0277 172.04 36.7292 175.69 36.7857H175.979C176.096 36.7857 176.206 36.8516 176.261 36.951L179.393 42.5812C179.507 42.7912 179.354 43.0481 179.108 43.0481Z" fill="#101111"/><path d="M198.581 30.8322C198.604 29.1744 197.962 27.5731 196.791 26.3806C195.624 25.1881 194.023 24.5033 192.341 24.4726C191.512 24.4865 190.695 24.6641 189.936 24.992C189.176 25.3204 188.49 25.7924 187.917 26.3856C187.343 26.976 186.894 27.6753 186.596 28.4377C186.297 29.2007 186.154 30.015 186.178 30.8322C186.156 31.6493 186.3 32.4615 186.598 33.2245C186.897 33.9874 187.346 34.6839 187.919 35.2743C188.493 35.8647 189.178 36.3372 189.938 36.6651C190.697 36.9935 191.515 37.1706 192.341 37.1846C194.02 37.1538 195.618 36.4691 196.788 35.2788C197.957 34.0885 198.602 32.49 198.581 30.8322ZM179.516 30.8322C179.525 28.3316 180.285 25.8874 181.702 23.8135C183.116 21.7379 185.123 20.1226 187.468 19.173C189.811 18.2213 192.389 17.9783 194.875 18.4715C197.359 18.9653 199.641 20.174 201.43 21.9479C203.219 23.7191 204.435 25.9745 204.927 28.4304C205.417 30.8841 205.161 33.4278 204.189 35.7374C203.217 38.047 201.573 40.0214 199.464 41.41C197.358 42.7985 194.878 43.5403 192.343 43.5403C190.655 43.5425 188.982 43.2169 187.42 42.5768C185.86 41.9389 184.444 41.0017 183.25 39.8209C182.058 38.6401 181.114 37.2376 180.474 35.6955C179.834 34.1528 179.509 32.4995 179.516 30.8322Z" fill="#101111"/><path d="M209.851 33.515V18.9872C209.851 18.7984 210.004 18.647 210.195 18.647H216.389C216.58 18.647 216.733 18.7984 216.733 18.9872V32.637C216.733 35.9151 218.266 37.8209 221.286 37.8209C223.861 37.8209 225.99 36.057 225.99 31.955V18.9537C225.99 18.7649 226.143 18.6135 226.334 18.6135H232.432C232.623 18.6135 232.776 18.7649 232.776 18.9537V42.711C232.776 42.8998 232.623 43.0511 232.432 43.0511H226.388C226.197 43.0511 226.044 42.8998 226.044 42.711V40.3472C225.218 41.3509 224.174 42.1563 222.989 42.7065C221.804 43.2567 220.507 43.5354 219.198 43.5237C213.365 43.5376 209.851 39.8205 209.851 33.515Z" fill="#101111"/><path d="M91.8363 18.6133H97.9346C98.1255 18.6133 98.2786 18.7646 98.2786 18.9534V42.7107C98.2786 42.8995 98.1255 43.0509 97.9346 43.0509H91.8363C91.6453 43.0509 91.4922 42.8995 91.4922 42.7107V18.9534C91.4922 18.7646 91.6447 18.6133 91.8363 18.6133Z" fill="#101111"/><path d="M94.8628 8.10515C95.4097 8.0789 95.9543 8.16659 96.4656 8.36041C96.9769 8.55422 97.4402 8.85137 97.8272 9.23398C98.2142 9.61658 98.5153 10.0724 98.7136 10.5778C98.9119 11.0833 98.9978 11.6218 98.9718 12.1602C98.9956 12.6964 98.9074 13.2326 98.7091 13.7331C98.5108 14.2335 98.2074 14.6871 97.8204 15.0652C97.4334 15.4428 96.9701 15.736 96.4611 15.9271C95.9521 16.1159 95.4074 16.1985 94.8628 16.1678C94.3204 16.1985 93.7809 16.1159 93.2741 15.9248C92.7679 15.7338 92.3069 15.4406 91.9244 15.0608C91.5396 14.6832 91.2436 14.2296 91.0498 13.7286C90.8566 13.2282 90.7724 12.6942 90.804 12.1608C90.7707 11.6246 90.8543 11.0861 91.0453 10.5834C91.2362 10.0802 91.5351 9.62217 91.917 9.23956C92.2995 8.85696 92.7605 8.55925 93.2667 8.3632C93.7735 8.16603 94.3182 8.0789 94.8628 8.10515Z" fill="#101111"/><path d="M261.322 36.7457C261.542 36.8022 261.645 37.0502 261.532 37.2462C261.073 38.0326 260.517 38.8023 259.908 39.4614C259.705 39.6787 259.497 39.8937 259.277 40.0993C259.17 40.2032 259.058 40.3026 258.945 40.4014C258.718 40.5997 258.486 40.7885 258.245 40.9706C258.126 41.0628 258.004 41.1499 257.88 41.2376C255.802 42.6948 253.327 43.4952 250.78 43.5377C249.409 43.5874 248.04 43.4221 246.727 43.049C246.55 42.9993 246.373 42.9428 246.196 42.8836C246.069 42.8434 245.945 42.7987 245.821 42.7535C245.721 42.7183 245.623 42.6803 245.525 42.6423C245.267 42.5407 245.011 42.4295 244.766 42.3117C244.62 42.243 244.476 42.1726 244.336 42.0989C244.254 42.0587 244.178 42.0162 244.102 41.976C243.182 41.4755 242.324 40.8611 241.555 40.1529C240.786 39.4447 240.108 38.6459 239.54 37.7774C239.368 37.5177 239.207 37.2484 239.055 36.9748H239.053C238.902 36.6983 238.761 36.4195 238.632 36.1364C237.934 34.6177 237.545 32.9811 237.493 31.3139L237.488 31.3066C237.416 29.6416 237.679 27.9765 238.262 26.4132C238.369 26.1177 238.494 25.8272 238.623 25.5441C238.623 25.5441 238.623 25.5435 238.623 25.5418C238.754 25.2586 238.893 24.9799 239.045 24.7057C239.549 23.7964 240.166 22.9462 240.882 22.1833C241.596 21.4203 242.403 20.7472 243.28 20.1831C243.352 20.1356 243.428 20.0887 243.505 20.0412C243.641 19.9563 243.777 19.8737 243.918 19.7977C244.159 19.6609 244.402 19.5335 244.651 19.4106C244.746 19.3632 244.847 19.3185 244.942 19.2738C245.062 19.2196 245.181 19.1677 245.303 19.118C245.475 19.0448 245.647 18.9789 245.819 18.9146C247.102 18.4449 248.454 18.1801 249.825 18.1304C252.369 17.9841 254.896 18.603 257.077 19.9038C257.206 19.9815 257.337 20.0597 257.462 20.1423C257.717 20.3054 257.961 20.4775 258.202 20.6595C258.321 20.7495 258.441 20.8416 258.556 20.9383C258.79 21.1248 259.015 21.3231 259.232 21.5286C259.803 22.0621 260.321 22.648 260.782 23.2763C260.899 23.4367 260.849 23.6662 260.675 23.7651L255.563 26.75C255.417 26.8349 255.233 26.7997 255.123 26.6746C254.557 26.0227 253.857 25.4915 253.062 25.1089C251.719 24.4666 250.2 24.3013 248.75 24.6437C247.3 24.9861 246.017 25.8127 245.114 26.9818C244.421 27.8793 243.986 28.9417 243.848 30.0543C243.827 30.2124 243.815 30.3733 243.807 30.5336C243.798 30.7157 243.798 30.8972 243.805 31.0815C243.812 31.2658 243.827 31.4379 243.848 31.6127C243.867 31.773 243.893 31.9294 243.924 32.0875C244.149 33.1811 244.66 34.1988 245.418 35.0438C246.406 36.1442 247.746 36.8742 249.22 37.1099C250.692 37.344 252.197 37.0675 253.484 36.3307C253.986 36.0403 254.445 35.6884 254.844 35.2846C254.929 35.1969 255.051 35.1595 255.171 35.1902C256.083 35.4214 260.008 36.4134 261.317 36.7485L261.322 36.7457Z" fill="#101111"/><path d="M17 4.78392C17 4.37861 17.3286 4.05005 17.7339 4.05005H42.2661C42.6714 4.05005 43 4.37861 43 4.78392V29.3162C43 29.7215 42.6714 30.05 42.2661 30.05H17V4.78392Z" fill="#101111"/><path d="M17 42.3162C17 42.7215 16.6714 43.05 16.2661 43.05L4.73387 43.05C4.32856 43.05 4 42.7215 4 42.3162L4 30.7839C4 30.3786 4.32857 30.05 4.73387 30.05L17 30.05L17 42.3162Z" fill="#101111"/></svg>
         </div>
-        <span class="logo-text">Hightouch</span>
       </div>
 
       <div class="eyebrow">Meta Ad Creative Forecaster</div>
-      <h1 class="landing-title">How many ad creatives do you actually need?</h1>
-      <p class="landing-sub">Meta advertising has fundamentally changed. The brands winning today have cracked the math on creative volume — most haven't.</p>
+      <h1 class="landing-title">How many ad creatives do you actually need to maximize performance?</h1>
+      <p class="fatigue-note">Meta's algorithm fatigues winning ads faster than ever — <strong>40% burn out ever single month.</strong> Teams struggling to ship fresh ad creative because they are waiting on agencies or busy creative teams may be leaving growth on the table.</p>
 
       <div class="stat-row">
         <div class="stat-card">
@@ -149,8 +258,6 @@
         </div>
       </div>
 
-      <p class="fatigue-note">Meta's algorithm fatigues winning ads faster than ever — <strong>40% burn out every single month.</strong> That means you're constantly running out of runway without realizing it.</p>
-
       <button class="cta-btn" onclick="showScreen('screen-q1')">
         Get your required creative volume
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
@@ -165,7 +272,9 @@
         <div class="q-dot active"></div>
         <div class="q-dot"></div>
         <div class="q-dot"></div>
-        <span class="q-step">1 of 3</span>
+        <div class="q-dot"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">1 of 5</span>
       </div>
       <div class="q-label">Step 1</div>
       <h2 class="q-title">What's your monthly Meta ad budget?</h2>
@@ -173,7 +282,7 @@
 
       <div class="budget-row">
         <span class="budget-symbol">$</span>
-        <input type="number" id="budget-input" placeholder="200000" min="0" max="2500000" value="200000" />
+        <input type="text" id="budget-input" placeholder="200,000" value="200,000" inputmode="numeric" />
       </div>
       <div class="budget-underline" id="budget-underline"></div>
 
@@ -202,7 +311,9 @@
         <div class="q-dot done"></div>
         <div class="q-dot active"></div>
         <div class="q-dot"></div>
-        <span class="q-step">2 of 3</span>
+        <div class="q-dot"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">2 of 5</span>
       </div>
       <div class="q-label">Step 2</div>
       <h2 class="q-title">What's your industry?</h2>
@@ -223,7 +334,7 @@
         <button class="industry-btn" onclick="selectIndustry(this, 0.10)">Other</button>
       </div>
 
-      <button class="next-btn" id="industry-next" disabled onclick="goToQ3()">
+      <button class="next-btn" id="industry-next" disabled onclick="showScreen('screen-q3')">
         Next
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </button>
@@ -232,26 +343,33 @@
     </div>
   </div>
 
-  <!-- Q3: EMAIL -->
+  <!-- Q3: FIND YOUR BRAND -->
   <div class="screen" id="screen-q3">
     <div class="q-screen">
       <div class="q-progress">
         <div class="q-dot done"></div>
         <div class="q-dot done"></div>
         <div class="q-dot active"></div>
-        <span class="q-step">3 of 3</span>
+        <div class="q-dot"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">3 of 5</span>
       </div>
       <div class="q-label">Step 3</div>
-      <h2 class="q-title">Where should we send your results?</h2>
-      <p class="q-hint">Your creative volume forecast — plus a plain-English breakdown of the math — will unlock immediately.</p>
+      <h2 class="q-title">Find your brand</h2>
+      <p class="q-hint">Search for your brand on Meta's Ad Library so we can pull your publicly available creative data.</p>
 
-      <div class="email-input-wrap">
-        <input type="email" id="email-input" placeholder="you@company.com" oninput="checkEmail()" />
+      <div class="brand-search-row">
+        <input type="text" id="brand-search-input" class="brand-search-input" placeholder="e.g. Monarch Money, Wealthfront, Betterment" onkeydown="handleSearchKey(event,'brand')" />
+        <button class="brand-search-btn" onclick="searchBrands('brand')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5l3 3"/></svg>
+          Search
+        </button>
       </div>
-      <p class="email-note">No spam. Relevant content for Meta performance marketers only.</p>
+      <div id="brand-results" class="brand-results" style="display:none"></div>
+      <div id="brand-status" class="brand-status" style="display:none"></div>
 
-      <button class="next-btn" id="email-next" disabled onclick="showResults()">
-        Unlock my results
+      <button class="next-btn" id="brand-next" disabled onclick="showScreen('screen-q4')">
+        Next
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </button>
       <br>
@@ -259,48 +377,164 @@
     </div>
   </div>
 
+  <!-- Q4: FIND YOUR COMPETITOR -->
+  <div class="screen" id="screen-q4">
+    <div class="q-screen">
+      <div class="q-progress">
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot active"></div>
+        <div class="q-dot"></div>
+        <span class="q-step">4 of 5</span>
+      </div>
+      <div class="q-label">Step 4</div>
+      <h2 class="q-title">Find your biggest competitor</h2>
+      <p class="q-hint">We'll benchmark your creative output against theirs in your results.</p>
+
+      <div class="brand-search-row">
+        <input type="text" id="competitor-search-input" class="brand-search-input" placeholder="e.g. Monarch Money, Wealthfront, Betterment" onkeydown="handleSearchKey(event,'competitor')" />
+        <button class="brand-search-btn" onclick="searchBrands('competitor')">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5l3 3"/></svg>
+          Search
+        </button>
+      </div>
+      <div id="competitor-results" class="brand-results" style="display:none"></div>
+      <div id="competitor-status" class="brand-status" style="display:none"></div>
+
+      <button class="next-btn" id="competitor-next" disabled onclick="showScreen('screen-q5')">
+        Next
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <br>
+      <button class="back-link" onclick="showScreen('screen-q3')">← Back</button>
+    </div>
+  </div>
+
+  <!-- Q5: EMAIL -->
+  <div class="screen" id="screen-q5">
+    <div class="q-screen">
+      <div class="q-progress">
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot done"></div>
+        <div class="q-dot active"></div>
+        <span class="q-step">5 of 5</span>
+      </div>
+      <div class="q-label">Step 5</div>
+      <h2 class="q-title">Where should we send your results?</h2>
+      <p class="q-hint">Your creative volume forecast — plus a plain-English breakdown of the math — will unlock immediately.</p>
+
+      <div class="email-input-wrap">
+        <input type="email" id="email-input" placeholder="you@company.com" oninput="checkEmail()" />
+        <div id="email-error" style="display:none;color:#dc4b4b;font-size:13px;margin-top:6px;">Please enter a valid work email</div>
+      </div>
+
+      <button class="next-btn" id="email-next" disabled onclick="showResults()">
+        Unlock my results
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <br>
+      <button class="back-link" onclick="showScreen('screen-q4')">← Back</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <div class="loading-ring"></div>
+      <div class="loading-text">Scanning your ad library…</div>
+      <div style="font-size:13px;color:#aaa;margin-top:-12px;">This can take up to 2 minutes</div>
+    </div>
+  </div>
+
   <!-- RESULTS -->
   <div class="screen" id="screen-results">
     <div class="results">
-      <div class="results-eyebrow">Your creative forecast</div>
-      <h2 class="results-title">You need <span class="big-num" id="res-monthly">—</span> new creatives launched each month</h2>
-      <p class="results-weekly">That's roughly <strong id="res-weekly">—</strong> new ads every week to stay ahead of fatigue and hit your spend target.</p>
 
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="metric-val" id="res-winners">—</div>
-          <div class="metric-lbl">Active winners needed to carry your budget</div>
+      <!-- Report header -->
+      <div class="results-report-header">
+        <div class="results-report-title">Creative Volume Report for <span id="res-brand-name">your brand</span></div>
+      </div>
+
+      <!-- Three vertical stats -->
+      <div class="results-stat-col">
+        <div class="results-stat-item">
+          <div class="results-stat-big" id="res-monthly">—</div>
+          <div class="results-stat-text">
+            <div class="results-stat-label">new creatives needed per month at your budget</div>
+            <div class="results-stat-sub">that's <span id="res-weekly">—</span> new ads per week</div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-val" id="res-fatigued">—</div>
-          <div class="metric-lbl">Winners fatiguing out this month</div>
+        <div class="results-stat-item">
+          <div class="results-stat-big" id="res-stat-launched">—</div>
+          <div class="results-stat-text">
+            <div class="results-stat-label">creatives <span id="res-brand-name-stat">your brand</span> has launched in the last 30 days</div>
+            <div class="results-stat-sub">based on publicly available Meta Ad Library data</div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-val" id="res-new-winners">—</div>
-          <div class="metric-lbl">Net-new winners you need to produce</div>
+        <div class="results-stat-item">
+          <div class="results-stat-big" id="res-stat-pct">—</div>
+          <div class="results-stat-text">
+            <div class="results-stat-label" id="res-stat-pct-label">loading performance summary…</div>
+            <div class="results-stat-sub" id="res-stat-pct-sub"></div>
+          </div>
         </div>
       </div>
 
-      <div class="explainer">
-        <div class="explainer-title">How we got to this number</div>
-        <ul id="explainer-list"></ul>
-      </div>
+      <div class="results-body">
 
-      <div class="cta-block">
-        <div class="cta-block-eyebrow">Hightouch Ad Studio</div>
-        <h3>Scale ad production without the bottlenecks</h3>
-        <p>Most teams know they need more creative — they just can't produce it fast enough. Hightouch Ad Studio lets you generate on-brand ad variations at scale, grounded in your actual customer data, brand guidelines, and approved assets. No design tickets. No brand review delays. Just more winning ads, faster.</p>
-        <div class="cta-features">
-          <span class="cta-pill">AI-generated variations</span>
-          <span class="cta-pill">On-brand by default</span>
-          <span class="cta-pill">Connected to your data</span>
-          <span class="cta-pill">Editable outputs</span>
-          <span class="cta-pill">Built-in approval flow</span>
+        <!-- Section 1: Volume -->
+        <div class="results-section">
+          <div class="results-section-head">
+            <h2 class="results-section-h2">How much creative does <span id="res-brand-name-2">your brand</span> need to launch monthly?</h2>
+          </div>
+          <div class="results-section-body">
+            <ul class="results-bullets">
+              <li>You need <strong id="res-monthly-2">—</strong> new creatives launched each month</li>
+              <li>That's roughly <strong id="res-weekly-2">—</strong> new ads every week to stay ahead of fatigue and hit your spend target.</li>
+              <li id="res-live-bullet" style="display:none"></li>
+            </ul>
+            <details class="explainer-dropdown">
+              <summary>See how we calculated it<span class="explainer-toggle-label"></span></summary>
+              <div class="explainer-steps">
+                <ul id="explainer-list"></ul>
+              </div>
+            </details>
+          </div>
         </div>
-        <button class="demo-btn" onclick="window.open('https://hightouch.com/platform/ad-studio', '_blank')">
-          See Hightouch Ad Studio
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </button>
+
+        <!-- Section 2: Competitor comparison -->
+        <div class="results-section">
+          <div class="results-section-head">
+            <h2 class="results-section-h2">How do you compare to your competitors?</h2>
+          </div>
+          <div class="results-section-body">
+            <div id="comp-container">
+              <div class="comp-loading">Loading ad data…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-block">
+          <div class="cta-block-eyebrow">Hightouch Ad Studio</div>
+          <h3>Scale ad production without the bottlenecks</h3>
+          <p>Waiting on agencies or burning internal design resources? Most teams know they need more creative — they just can't produce it fast enough. Hightouch Ad Studio lets you generate on-brand ad variations at scale, grounded in your actual customer data, brand guidelines, and approved assets.</p>
+          <div class="cta-features">
+            <span class="cta-pill">AI-generated variations</span>
+            <span class="cta-pill">On-brand by default</span>
+            <span class="cta-pill">Connected to your data</span>
+            <span class="cta-pill">Editable outputs</span>
+            <span class="cta-pill">Built-in approval flow</span>
+          </div>
+          <button class="demo-btn" onclick="window.open('https://hightouch.com/platform/ad-studio', '_blank')">
+            See Hightouch Ad Studio
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -308,32 +542,118 @@
 </div>
 
 <script>
-  var state = { budget: 200000, winRate: 0.10 };
+
+  var state = { budget: 200000, winRate: 0.10, brand: null, competitor: null };
+  var brandCache = {};
+
+  function searchBrands(type) {
+    var inputEl = document.getElementById(type === 'brand' ? 'brand-search-input' : 'competitor-search-input');
+    var resultsEl = document.getElementById(type === 'brand' ? 'brand-results' : 'competitor-results');
+    var statusEl = document.getElementById(type === 'brand' ? 'brand-status' : 'competitor-status');
+    var nextEl = document.getElementById(type === 'brand' ? 'brand-next' : 'competitor-next');
+    var query = inputEl.value.trim();
+    if (!query) return;
+
+    resultsEl.style.display = 'none';
+    resultsEl.innerHTML = '';
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Searching…';
+
+    fetch('/api/search?query=' + encodeURIComponent(query))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      statusEl.style.display = 'none';
+      var companies = data.searchResults || [];
+      if (!companies.length) {
+        statusEl.style.display = 'block';
+        statusEl.textContent = 'No results found. Try a different name.';
+        return;
+      }
+      resultsEl.style.display = 'flex';
+      var slice = companies.slice(0, 8);
+      slice.forEach(function(c, i) { brandCache[type + '_' + i] = c; });
+      resultsEl.innerHTML = slice.map(function(c, i) {
+        var name = c.name || '';
+        var logo = c.image_uri || '';
+        var likes = c.likes || c.ig_followers || '';
+        var likesText = likes ? Number(likes).toLocaleString() + ' followers' : '';
+        var initial = name.charAt(0).toUpperCase();
+        var logoHtml = logo
+          ? '<img class="brand-card-logo" src="' + logo + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+            '<div class="brand-card-logo-placeholder" style="display:none">' + initial + '</div>'
+          : '<div class="brand-card-logo-placeholder">' + initial + '</div>';
+        return '<button class="brand-card" onclick="selectBrand(\'' + type + '\', this, \'' + (type + '_' + i) + '\')">' +
+          logoHtml +
+          '<div class="brand-card-info">' +
+            '<div class="brand-card-name">' + name + '</div>' +
+            (likesText ? '<div class="brand-card-meta">' + likesText + '</div>' : '') +
+          '</div>' +
+        '</button>';
+      }).join('');
+    })
+    .catch(function() {
+      statusEl.style.display = 'block';
+      statusEl.textContent = "Search failed! If you're seeing this, then our vibe-coded tool broke. Thanks, Claude!";
+    });
+  }
+
+  function selectBrand(type, el, cacheKey) {
+    var company = brandCache[cacheKey];
+    var container = el.closest('.brand-results');
+    container.querySelectorAll('.brand-card').forEach(function(b) { b.classList.remove('selected'); });
+    el.classList.add('selected');
+    if (type === 'brand') {
+      state.brand = company;
+      document.getElementById('brand-next').disabled = false;
+    } else {
+      state.competitor = company;
+      document.getElementById('competitor-next').disabled = false;
+    }
+  }
+
+  function handleSearchKey(e, type) {
+    if (e.key === 'Enter') searchBrands(type);
+  }
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     document.getElementById(id).classList.add('active');
+    document.body.classList.toggle('landing-bg', id === 'screen-landing');
     window.scrollTo(0, 0);
   }
 
   var slider = document.getElementById('budget-slider');
   var budgetInput = document.getElementById('budget-input');
 
-  slider.addEventListener('input', function() {
-    state.budget = parseInt(slider.value);
-    budgetInput.value = state.budget;
-  });
+  function parseBudget() {
+    return parseInt(budgetInput.value.replace(/,/g, '')) || 0;
+  }
+
+  function formatBudget(n) {
+    return n.toLocaleString('en-US');
+  }
 
   budgetInput.addEventListener('focus', function() { document.getElementById('budget-underline').classList.add('focused'); });
   budgetInput.addEventListener('blur', function() { document.getElementById('budget-underline').classList.remove('focused'); });
   budgetInput.addEventListener('input', function() {
-    var raw = parseInt(budgetInput.value) || 0;
-    state.budget = Math.min(raw, 2500000);
+    var cursor = budgetInput.selectionStart;
+    var oldLen = budgetInput.value.length;
+    var raw = Math.min(parseBudget(), 2500000);
+    state.budget = raw;
+    var formatted = raw > 0 ? formatBudget(raw) : '';
+    budgetInput.value = formatted;
+    var newLen = budgetInput.value.length;
+    budgetInput.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
     slider.value = state.budget;
   });
 
+  slider.addEventListener('input', function() {
+    state.budget = parseInt(slider.value);
+    budgetInput.value = formatBudget(state.budget);
+  });
+
   function goToQ2() {
-    var raw = parseInt(budgetInput.value) || 200000;
+    var raw = parseBudget();
     state.budget = raw > 0 ? raw : 200000;
     showScreen('screen-q2');
   }
@@ -342,6 +662,7 @@
     document.querySelectorAll('.industry-btn').forEach(function(b) { b.classList.remove('selected'); });
     el.classList.add('selected');
     state.winRate = winRate;
+    state.industry = el.textContent;
     document.getElementById('industry-next').disabled = false;
   }
 
@@ -350,9 +671,21 @@
     showScreen('screen-q3');
   }
 
+  var BLOCKED_DOMAINS = ['actioniq.com','actioniq.co','actioniq.io','adobe.com','adobe.co','adobe.io','amperity.com','amperity.co','amperity.io','braze.com','braze.co','braze.io','getcensus.com','getcensus.co','getcensus.io','getinsider.com','getinsider.co','getinsider.io','klayvio.com','klayvio.co','klayvio.io','liveramp.com','liveramp.co','liveramp.io','mparticle.com','mparticle.co','mparticle.io','rudderstack.com','rudderstack.co','rudderstack.io','salesforce.com','salesforce.co','salesforce.io','segment.com','segment.co','segment.io','sendgrid.com','sendgrid.co','sendgrid.io','tealium.com','tealium.co','tealium.io','twilio.com','twilio.co','twilio.io','useinsider.com','useinsider.co','useinsider.io','work.com','work.co','work.io','workato.com','workato.co','workato.io','test.com','test.co','test.io','testing.com','testing.co','testing.io','fake.com','fake.co','fake.io','gmail.com','gmail.co','gmail.io','gmil.com','gmil.co','gmil.io','gmal.com','gmal.co','gmal.io','yahoo.com','yahoo.co','yahoo.io','outlook.com','outlook.co','outlook.io','hey.com','hey.co','hey.io','msn.com','msn.co','msn.io','yhoo.com','yhoo.co','yhoo.io','smartly.io','smartly.com','smartly.co','agentio.com','agentio.co','agentio.io','superscale.ai','superscale.com','superscale.co','superscale.io'];
+
+  function isBlockedEmail(val) {
+    var parts = val.split('@');
+    var local = parts[0] ? parts[0].toLowerCase() : '';
+    var domain = parts[1] ? parts[1].toLowerCase() : '';
+    if (local.indexOf('test') !== -1) return true;
+    if (BLOCKED_DOMAINS.indexOf(domain) !== -1) return true;
+    return false;
+  }
+
   function checkEmail() {
     var val = document.getElementById('email-input').value;
     var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    document.getElementById('email-error').style.display = 'none';
     document.getElementById('email-next').disabled = !valid;
   }
 
@@ -363,35 +696,206 @@
   }
 
   function showResults() {
+    var email = document.getElementById('email-input').value || '';
+    if (isBlockedEmail(email)) {
+      document.getElementById('email-error').style.display = 'block';
+      return;
+    }
+    if (email.toLowerCase().endsWith('@pixis.ai')) {
+      window.location.href = 'https://www.google.com/search?q=blocked+by+james+youtube+clip&oq=blocked+by+james+youtube+clip&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigAdIBCDQ4NTdqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:acf4b9bd,vid:ByDt5q7Qc5o,st:0';
+      return;
+    }
+
+    // Fire-and-forget submission to Google Sheet
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email:      email,
+        brand:      (state.brand && state.brand.name) ? state.brand.name : '',
+        competitor: (state.competitor && state.competitor.name) ? state.competitor.name : '',
+        budget:     state.budget || 200000,
+        industry:   state.industry || '',
+      }),
+    }).catch(function() {});  // silent fail — never block the user
+
     var budget = state.budget || 200000;
     var winRate = state.winRate || 0.10;
     var churnRate = 0.40;
     var buffer = 1.20;
-    var spendPerWinner = Math.max(budget * 0.10, 5000);
+    var brandName = (state.brand && state.brand.name) ? state.brand.name : 'your brand';
 
-    var winnersRequired = Math.ceil(budget / spendPerWinner);
-    var survivors = Math.floor(winnersRequired * (1 - churnRate));
-    var fatigued = winnersRequired - survivors;
-    var newWinnersNeeded = Math.ceil(winnersRequired - survivors);
-    var baseTarget = Math.ceil(newWinnersNeeded / winRate);
+    var winnersRequired = budget <= 100000
+      ? 5
+      : 5 + (Math.min(budget, 2500000) - 100000) / (2500000 - 100000) * 30;
+    var spendPerWinner = budget / winnersRequired;
+    var survivingWinners = winnersRequired * (1 - churnRate);
+    var newWinnersNeeded = winnersRequired - survivingWinners;
+    var baseTarget = newWinnersNeeded / winRate;
     var finalTarget = Math.ceil(baseTarget * buffer);
     var weekly = Math.ceil(finalTarget / 4.3);
     var pct = Math.round(winRate * 100);
+    var winnersRoundedDisplay = Math.round(winnersRequired);
+    var newWinnersDisplay = Math.round(newWinnersNeeded);
+    var baseTargetDisplay = Math.round(baseTarget);
 
+    // Populate header + stats (before API loads)
+    document.getElementById('res-brand-name').textContent = brandName;
+    document.getElementById('res-brand-name-stat').textContent = brandName;
+    document.getElementById('res-brand-name-2').textContent = brandName;
     document.getElementById('res-monthly').textContent = finalTarget;
-    document.getElementById('res-weekly').textContent = weekly + ' ads';
-    document.getElementById('res-winners').textContent = winnersRequired;
-    document.getElementById('res-fatigued').textContent = fatigued;
-    document.getElementById('res-new-winners').textContent = newWinnersNeeded;
+    document.getElementById('res-monthly-2').textContent = finalTarget;
+    document.getElementById('res-weekly').textContent = weekly;
+    document.getElementById('res-weekly-2').textContent = weekly + ' ads';
+    // launched + pct will fill after API
+    document.getElementById('res-stat-launched').textContent = '…';
+    document.getElementById('res-stat-pct').textContent = '…';
+    document.getElementById('res-stat-pct-label').textContent = 'loading performance summary…';
 
     var list = document.getElementById('explainer-list');
     list.innerHTML =
-      '<li>Your ' + fmt(budget) + '/month budget needs <strong>' + winnersRequired + ' winning ads</strong> running simultaneously — each winner absorbs roughly ' + fmt(Math.round(spendPerWinner)) + '/month at your scale.</li>' +
-      '<li><strong>' + fatigued + ' of those winners</strong> will burn out this month. Ad fatigue is unavoidable on Meta — 40% of winning ads stop performing every 30 days.</li>' +
-      '<li>To replace them, you need <strong>' + newWinnersNeeded + ' net-new winners.</strong> But only ~' + pct + '% of ads in your industry become winners, so you have to launch far more to find them.</li>' +
-      '<li>Dividing ' + newWinnersNeeded + ' needed winners by a ' + pct + '% win rate = ' + baseTarget + ' launches. Add a <strong>20% buffer</strong> for testing variance and seasonal swings — that\'s <strong>' + finalTarget + ' creatives per month.</strong></li>';
+      '<li>Your ' + fmt(budget) + '/month budget needs <strong>' + winnersRoundedDisplay + ' winning ads</strong> running simultaneously — each winner absorbs roughly ' + fmt(spendPerWinner) + '/month at your scale.</li>' +
+      '<li><strong>' + Math.round(winnersRequired - survivingWinners) + ' of those winners</strong> will burn out this month. Ad fatigue is unavoidable on Meta — 40% of winning ads stop performing every 30 days.</li>' +
+      '<li>To replace them, you need <strong>' + newWinnersDisplay + ' net-new winners.</strong> But only ~' + pct + '% of ads in your industry become winners, so you have to launch far more to find them.</li>' +
+      '<li>With ' + newWinnersDisplay + ' winners needed and ' + pct + '% of ads becoming winners, that\'s ' + baseTargetDisplay + ' new ads launched. We added a <strong>20% buffer</strong> for testing variance and seasonal campaigns — that\'s <strong>' + finalTarget + ' creatives per month.</strong></li>';
 
-    showScreen('screen-results');
+    showScreen('screen-loading');
+
+    var brand = state.brand;
+    var competitor = state.competitor;
+    var container = document.getElementById('comp-container');
+
+    if (!brand || !brand.page_id || !competitor || !competitor.page_id) {
+      container.innerHTML = '<p class="comp-error">No brand or competitor selected — skipping comparison.</p>';
+      document.getElementById('res-stat-launched').textContent = '—';
+      document.getElementById('res-stat-pct').textContent = '—';
+      document.getElementById('res-stat-pct-label').textContent = 'Could not load ad data.';
+      showScreen('screen-results');
+      return;
+    }
+
+    Promise.all([
+      fetch('/api/ads?pageId=' + encodeURIComponent(brand.page_id)).then(function(r) { return r.json(); }),
+      fetch('/api/ads?pageId=' + encodeURIComponent(competitor.page_id)).then(function(r) { return r.json(); }),
+    ]).then(function(results) {
+      var b = results[0];
+      var c = results[1];
+
+      var bLive = b.liveAds || 0;
+      var cLive = c.liveAds || 0;
+      var bL30 = b.launched30d || 0;
+      var cL30 = c.launched30d || 0;
+      var bL7  = b.launched7d  || 0;
+      var cL7  = c.launched7d  || 0;
+      var bLong = b.longestRunningDays != null ? b.longestRunningDays + 'd' : '—';
+      var cLong = c.longestRunningDays != null ? c.longestRunningDays + 'd' : '—';
+
+      // Fill stat row
+      var pctDiff = finalTarget > 0 ? Math.round((bL30 - finalTarget) / finalTarget * 100) : 0;
+      var pctSign = pctDiff >= 0 ? '+' : '';
+      var pctColor = pctDiff >= 0 ? '#2da281' : '#dc4b4b';
+      var absPct = Math.abs(pctDiff);
+      document.getElementById('res-stat-launched').textContent = bL30;
+      document.getElementById('res-stat-pct').innerHTML = '<span style="color:' + pctColor + '">' + pctSign + pctDiff + '%</span>';
+      var perfHeadline, perfSub;
+      if (bL30 > finalTarget) {
+        perfHeadline = 'Above your monthly creative target';
+        perfSub = 'In the past 30 days, ' + brandName + ' has launched more creative than needed to maximize performance. Keep it up.';
+      } else if (bL30 === finalTarget) {
+        perfHeadline = 'At your monthly creative target';
+        perfSub = 'In the past 30 days, ' + brandName + ' has launched exactly the creative needed to maximize performance.';
+      } else {
+        perfHeadline = 'Below your monthly creative target';
+        perfSub = 'In the past 30 days, ' + brandName + ' has launched less creative than needed to maximize performance. You\'ll need to ramp up testing.';
+      }
+      document.getElementById('res-stat-pct-label').textContent = perfHeadline;
+      document.getElementById('res-stat-pct-sub').textContent = perfSub;
+
+      // Third bullet
+      var liveBullet = document.getElementById('res-live-bullet');
+      if (bL30 > 0 || finalTarget > 0) {
+        var tail = bL30 >= finalTarget
+          ? '<span style="color:#2da281;font-weight:700">It\'s a lot of work, but you have enough to perform.</span>'
+          : '<span style="color:#dc4b4b;font-weight:700">You need to increase creative testing to maximize your budget.</span>';
+        var pctHtml = '<strong style="color:' + pctColor + '">' + pctSign + pctDiff + '%</strong>';
+        liveBullet.innerHTML = 'At ' + brandName + ', you have launched ' + bL30 + ' ads this month (' + pctHtml + ' vs your ' + finalTarget + ' target). ' + tail;
+        liveBullet.style.display = '';
+      }
+
+      // Competitor headline
+      var totalYou = bL30 || bLive || 0;
+      var totalComp = cL30 || cLive || 0;
+      var headlineText;
+      if (totalYou === 0 && totalComp === 0) {
+        headlineText = "It doesn't look like either brand runs ads";
+      } else if (totalYou === 0) {
+        headlineText = "It doesn't look like " + brand.name + " runs ads";
+      } else if (totalComp === 0) {
+        headlineText = "It doesn't look like " + competitor.name + " runs ads";
+      } else if (totalYou === totalComp) {
+        headlineText = brand.name + ' and ' + competitor.name + ' are running the same number of ads';
+      } else {
+        var ratio = totalComp > totalYou ? (totalComp / totalYou).toFixed(1) : (totalYou / totalComp).toFixed(1);
+        headlineText = totalComp > totalYou
+          ? competitor.name + ' launches ' + ratio + 'x more ads than you'
+          : 'You launch ' + ratio + 'x more ads than ' + competitor.name;
+      }
+
+      function metricVal(thisVal, otherVal) {
+        var cls = thisVal !== otherVal ? (thisVal >= otherVal ? ' higher' : ' lower') : '';
+        return '<div class="comp-metric-val' + cls + '">' + thisVal + '</div>';
+      }
+
+      function logoHtml(company) {
+        var img = company.image_uri || '';
+        var initial = (company.name || '?').charAt(0).toUpperCase();
+        return img
+          ? '<img class="comp-card-logo" src="' + img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+            '<div class="comp-card-logo-placeholder" style="display:none">' + initial + '</div>'
+          : '<div class="comp-card-logo-placeholder">' + initial + '</div>';
+      }
+
+      function buildCard(company, data, oppData, isYou) {
+        var live = data.liveAds || 0;
+        var l30  = data.launched30d || 0;
+        var l7   = data.launched7d  || 0;
+        var long = data.longestRunningDays != null ? data.longestRunningDays + 'd' : '—';
+        var oppLive = oppData.liveAds || 0;
+        var oppL30  = oppData.launched30d || 0;
+        var oppL7   = oppData.launched7d  || 0;
+        return '<div class="comp-card' + (isYou ? ' you' : '') + '">' +
+          '<div class="comp-card-header">' +
+            logoHtml(company) +
+            '<div class="comp-card-name">' + company.name + '</div>' +
+            (isYou ? '<span class="comp-card-badge">You</span>' : '') +
+          '</div>' +
+          '<div class="comp-card-metrics">' +
+            '<div class="comp-metric">' + metricVal(live, oppLive) + '<div class="comp-metric-lbl">Live ads</div></div>' +
+            '<div class="comp-metric-divider"></div>' +
+            '<div class="comp-metric">' + metricVal(l30, oppL30) + '<div class="comp-metric-lbl">Launched last 30d</div></div>' +
+            '<div class="comp-metric-divider"></div>' +
+            '<div class="comp-metric">' + metricVal(l7, oppL7) + '<div class="comp-metric-lbl">Launched last 7d</div></div>' +
+            '<div class="comp-metric-divider"></div>' +
+            '<div class="comp-metric"><div class="comp-metric-val">' + long + '</div><div class="comp-metric-lbl">Longest live ad</div></div>' +
+          '</div>' +
+        '</div>';
+      }
+
+      container.innerHTML =
+        '<p class="comp-headline">' + headlineText + '</p>' +
+        '<div class="comp-cards">' +
+          buildCard(brand, b, c, true) +
+          buildCard(competitor, c, b, false) +
+        '</div>';
+
+      showScreen('screen-results');
+    }).catch(function() {
+      container.innerHTML = '<p class="comp-error">Could not load competitor ad data. Try refreshing.</p>';
+      document.getElementById('res-stat-launched').textContent = '—';
+      document.getElementById('res-stat-pct').textContent = '—';
+      document.getElementById('res-stat-pct-label').textContent = 'Could not load ad data.';
+      showScreen('screen-results');
+    });
   }
 </script>
 </body>
