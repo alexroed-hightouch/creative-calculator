@@ -149,6 +149,9 @@
   .results-stat-item { display: flex; align-items: flex-start; gap: 24px; padding: 28px 40px; border-bottom: 1px solid #f0f0f0; }
   .results-stat-item:last-child { border-bottom: none; }
   .results-stat-big { font-size: 56px; font-weight: 700; color: #141213; letter-spacing: -2px; line-height: 1; width: 140px; text-align: right; flex-shrink: 0; }
+  .results-stat-item.stacked { flex-direction: column; gap: 10px; }
+  .results-stat-item.stacked .results-stat-big { width: auto; text-align: left; }
+  .results-stat-item.stacked .results-stat-text { padding-top: 0; }
   .results-stat-text { display: flex; flex-direction: column; justify-content: center; gap: 3px; padding-top: 6px; }
   .results-stat-label { font-size: 15px; font-weight: 600; color: #141213; letter-spacing: -0.2px; line-height: 1.4; }
   .results-stat-sub { font-size: 13px; color: #aaa; line-height: 1.4; }
@@ -472,7 +475,7 @@
             <div class="results-stat-sub">based on publicly available Meta Ad Library data</div>
           </div>
         </div>
-        <div class="results-stat-item">
+        <div class="results-stat-item stacked">
           <div class="results-stat-big" id="res-stat-pct">—</div>
           <div class="results-stat-text">
             <div class="results-stat-label" id="res-stat-pct-label">loading performance summary…</div>
