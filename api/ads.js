@@ -28,7 +28,6 @@ export default async function handler(req, res) {
     u.searchParams.set('pageId', pageId);
     u.searchParams.set('status', 'ACTIVE');
     u.searchParams.set('sort_by', 'relevancy_monthly_grouped'); // newest ads first
-    u.searchParams.set('trim', 'true');
     if (cursor) u.searchParams.set('cursor', cursor);
 
     const apiRes = await fetch(u.toString(), {
