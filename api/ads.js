@@ -1,7 +1,7 @@
 // Using sort_by=relevancy_monthly_grouped returns ads newest-first.
 // We paginate and stop as soon as the oldest ad on a page falls outside our 30d window.
 // This makes it efficient for large advertisers (no need to fetch all 3000+ ads).
-const MAX_PAGES = 50;
+const MAX_PAGES = 20;
 const BASE = 'https://api.scrapecreators.com/v1/facebook/adLibrary/company/ads';
 
 export default async function handler(req, res) {
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
     u.searchParams.set('pageId', pageId);
     u.searchParams.set('status', 'ACTIVE');
     u.searchParams.set('sort_by', 'relevancy_monthly_grouped'); // newest ads first
-    u.searchParams.set('trim', 'true');
     if (cursor) u.searchParams.set('cursor', cursor);
 
     const apiRes = await fetch(u.toString(), {
